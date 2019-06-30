@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">分享</button>
+</body>
+
+</html>
+<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
+<script src="https://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+<script src="https://cdn.bootcss.com/vConsole/3.3.0/vconsole.min.js"></script>
+
+<script>
+
+    $.ajax({
+        method: "get",
+        url: "https://alleyzyh.natappvip.cc/wechat/sign",
+        success: handleAjaxSuccess
+    })
+    function handleAjaxSuccess(data) {
+        console.log(data);
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: data.timestamp, // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature,// 必填，签名
+            jsApiList: ["updateAppMessageShareData"] // 必填，需要使用的JS接口列表
+        });
+
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+           
+            wx.updateAppMessageShareData({
+                title: '哇塞', // 分享标题
+                desc: '我的天啊', // 分享描述
+                link: 'https://alleyzyh.natappvip.cc/index.html', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_86d58ae1.png', // 分享图标
+                success: function () {
+                    // 设置成功
+                }
+            })
+           
+
+        });
+    }
+
+</script>
